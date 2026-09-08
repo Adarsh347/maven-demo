@@ -2,6 +2,10 @@ pipeline {
 
     agent any
 
+    environment {
+        PATH = "/opt/homebrew/bin:${env.PATH}"
+    }
+
     stages {
 
         stage('Checkout') {
@@ -10,12 +14,18 @@ pipeline {
             }
         }
 
+        stage('Check Maven') {
+            steps {
+                sh 'which mvn'
+                sh 'mvn -version'
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'mvn clean package'
             }
         }
-
     }
 
     post {
